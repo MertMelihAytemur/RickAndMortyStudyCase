@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <!-- spacing values -->
+
+    <dimen name="spacing_tiny">4dp</dimen>
+    <dimen name="spacing_small">8dp</dimen>
+    <dimen name="spacing_medium">12dp</dimen>
+    <dimen name="spacing_large">16dp</dimen>
+    <dimen name="spacing_huge">24dp</dimen>
+
+    <!-- font size values -->
+    <dimen name="fontSize_tiny">8sp</dimen>
+    <dimen name="fontSize_small">12sp</dimen>
+    <dimen name="fontSize_medium">14sp</dimen>
+    <dimen name="fontSize_large">18sp</dimen>
+    <dimen name="fontSize_huge">24sp</dimen>
+
+    <!-- radius values -->
+    <dimen name="radius_small">4dp</dimen>
+    <dimen name="radius_normal">8dp</dimen>
+    <dimen name="radius_large">12dp</dimen>
+    <dimen name="radius_huge">16dp</dimen>
+</resources>

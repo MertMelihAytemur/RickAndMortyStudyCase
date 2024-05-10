@@ -5,7 +5,7 @@ import android.content.Context
 import android.os.Bundle
 import android.view.Window
 
-abstract class CoreLoadingDialog(private val context: Context) : Dialog(context) {
+abstract class CoreLoadingDialog(private val context: Context) : Dialog(context),LoadingInterface {
 
     abstract val layoutId: Int
 

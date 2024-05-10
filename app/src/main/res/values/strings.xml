@@ -1,3 +1,19 @@
 <resources>
     <string name="app_name">RickAndMortyStudyCase</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- OnBoarding Fragment Strings -->
+    <string name="onBoarding_next">Next</string>
+    <string name="onBoarding_getStarted">Get Started</string>
+
+    <!-- OnBoardingPage Fragment Strings -->
+    <string name="onBoardingPage_first_title">Let the Exploration Begin!</string>
+    <string name="onBoardingPage_first_description">Ready to embark on new adventures? Let\'s discover the land of wonders together!</string>
+
+    <string name="onBoardingPage_second_title">Discover with Ease</string>
+    <string name="onBoardingPage_second_description">Everything you\'re looking for is at your fingertips! Explore easily and enjoy a delightful shopping experience!</string>
+
+    <string name="onBoardingPage_third_title">Stronger Together</string>
+    <string name="onBoardingPage_third_description">We\'re stronger as a team with you! Come along and let\'s take this journey together!</string>
 </resources>
