@@ -1,6 +1,8 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    kotlin("kapt")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -24,6 +26,11 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            buildConfigField("String", "API_BASE_URL", "\"https://rickandmortyapi.com/api/\"")
+        }
+
+        debug {
+            buildConfigField("String", "API_BASE_URL", "\"https://rickandmortyapi.com/api/\"")
         }
     }
     compileOptions {
@@ -32,6 +39,10 @@ android {
     }
     kotlinOptions {
         jvmTarget = "1.8"
+    }
+    buildFeatures {
+        viewBinding = true
+        buildConfig = true
     }
 }
 
@@ -46,4 +57,25 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
     implementation(project(":core"))
+
+    //Lottie Animation
+    implementation("com.airbnb.android:lottie:6.0.0")
+
+    // ViewPager
+    implementation ("androidx.viewpager2:viewpager2:1.0.0")
+
+    //Glide for image loading
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+
+    implementation("androidx.fragment:fragment-ktx:1.7.0")
+
+    //Dagger Hilt for dependency injection
+    implementation("com.google.dagger:hilt-android:2.48.1")
+    kapt("com.google.dagger:hilt-compiler:2.48.1")
+
+    //Navigation Component
+    implementation("androidx.navigation:navigation-fragment-ktx:2.7.7")
+    implementation("androidx.navigation:navigation-ui-ktx:2.7.7")
+
+
 }
