@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context="feature.onboarding.presentation.OnBoardingFragment">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/ic_arrow_left" />
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPagerInformations"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/toolbar" />
+
+    <RadioGroup
+        android:id="@+id/radioGroupIndicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_huge"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@id/buttonNextOrGetStarted"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/viewPagerInformations"
+        app:layout_constraintVertical_bias="0.0">
+
+        <RadioButton
+            android:layout_width="24dp"
+            android:layout_height="12dp"
+            android:layout_margin="@dimen/spacing_tiny"
+            android:clickable="false"
+            android:background="@drawable/selector_indicator"
+            android:button="@null"
+            android:checked="false" />
+
+        <RadioButton
+            android:layout_width="24dp"
+            android:layout_height="12dp"
+            android:layout_margin="@dimen/spacing_tiny"
+            android:clickable="false"
+            android:background="@drawable/selector_indicator"
+            android:button="@null"
+            android:checked="false" />
+
+        <RadioButton
+            android:layout_width="24dp"
+            android:layout_height="12dp"
+            android:layout_margin="@dimen/spacing_tiny"
+            android:clickable="false"
+            android:background="@drawable/selector_indicator"
+            android:button="@null"
+            android:checked="false" />
+    </RadioGroup>
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/buttonNextOrGetStarted"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/spacing_huge"
+        android:layout_marginBottom="@dimen/spacing_huge"
+        android:backgroundTint="@color/color_primary"
+        android:paddingVertical="@dimen/spacing_medium"
+        app:cornerRadius="@dimen/radius_normal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        tools:text="@string/onBoarding_next" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
