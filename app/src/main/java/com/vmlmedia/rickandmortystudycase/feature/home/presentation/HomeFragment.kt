@@ -5,6 +5,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,10 +15,13 @@ import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.vmlmedia.core.util.logD
 import com.vmlmedia.rickandmortystudycase.R
+import com.vmlmedia.rickandmortystudycase.common.ext.fadeVisibility
 import com.vmlmedia.rickandmortystudycase.core.ui.BaseFragment
+import com.vmlmedia.rickandmortystudycase.core.ui.custom.SwipeFlingAdapterView
 import com.vmlmedia.rickandmortystudycase.databinding.FragmentHomeBinding
 import com.vmlmedia.rickandmortystudycase.feature.home.domain.uimodel.CharacterListUiModel
 import com.vmlmedia.rickandmortystudycase.feature.home.domain.uimodel.GetCharacterListApiState
+import com.vmlmedia.rickandmortystudycase.feature.home.presentation.adapter.CharactersArrayAdapter
 import com.vmlmedia.rickandmortystudycase.feature.home.presentation.adapter.CharactersListAdapter
 import com.vmlmedia.rickandmortystudycase.feature.home.presentation.adapter.SwipeCardCallback
 import dagger.hilt.android.AndroidEntryPoint
@@ -26,15 +32,15 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>(
 ) {
     override val viewModel: HomeViewModel by viewModels()
 
-    private val adapter: CharactersListAdapter by lazy {
-        CharactersListAdapter()
-    }
+    private lateinit var charactersAdapter: CharactersArrayAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initAdapter()
         viewModel.getCharacters()
         observeEvents()
+
+        setupAdapter()
+        setupFlingListener()
     }
 
     private fun observeEvents() {
@@ -48,35 +54,49 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>(
         }
     }
 
-    private fun initAdapter() {
-        binding.rvCharacters.adapter = adapter
-
-        //set horizontal layout manager
-        binding.rvCharacters.layoutManager = LinearLayoutManager(
-            requireContext(),
-            LinearLayoutManager.HORIZONTAL,
-            false
+    private fun setupAdapter() {
+        charactersAdapter = CharactersArrayAdapter(
+            requireContext(), viewModel.characterList,
+            ::onDeclineClick, ::onAcceptClick
         )
 
-        val itemTouchHelper = ItemTouchHelper(SwipeCardCallback(adapter))
-        itemTouchHelper.attachToRecyclerView(binding.rvCharacters)
+        binding.frame.adapter = charactersAdapter
+    }
 
-        val snapHelper = PagerSnapHelper()
-        snapHelper.attachToRecyclerView(binding.rvCharacters)
-
-        // Add scroll listener for infinite scroll
-        binding.rvCharacters.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                val layoutManager = recyclerView.layoutManager as LinearLayoutManager
-                val lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition()
-                val totalItemCount = layoutManager.itemCount
-
-                if (lastVisibleItemPosition == totalItemCount - 1) {
-                    viewModel.getCharacters()
+    private fun setupFlingListener() {
+        binding.frame.setFlingListener(object : SwipeFlingAdapterView.onFlingListener {
+            override fun removeFirstObjectInAdapter() {
+                if (viewModel.characterList.isNotEmpty()) {
+                    viewModel.characterList.removeAt(0)
+                    charactersAdapter.notifyDataSetChanged()
                 }
             }
+
+            override fun onLeftCardExit(dataObject: Any) {
+                binding.tvDecline.fadeVisibility()
+            }
+
+            override fun onRightCardExit(dataObject: Any) {
+                binding.tvAccept.fadeVisibility()
+            }
+
+            override fun onAdapterAboutToEmpty(itemsInAdapter: Int) {
+                viewModel.getCharacters()
+                charactersAdapter.notifyDataSetChanged()
+            }
+
+            override fun onScroll(scrollProgressPercent: Float) {
+                val view = binding.frame.selectedView ?: return
+                view.findViewById<View>(R.id.item_swipe_right_indicator).alpha =
+                    if (scrollProgressPercent < 0) -scrollProgressPercent else 0f
+                view.findViewById<View>(R.id.item_swipe_left_indicator).alpha =
+                    if (scrollProgressPercent > 0) scrollProgressPercent else 0f
+            }
         })
+    }
+
+    private fun makeToast(message: String) {
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 
     private fun onGetCharactersResponseReceived(getCharacterListApiState: GetCharacterListApiState) {
@@ -98,7 +118,15 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>(
             viewModel.pageSize = it.pageSize
             viewModel.itemCount = it.itemCount
 
-            adapter.submitList(viewModel.characterList.toList())
+            charactersAdapter.notifyDataSetChanged()
         }
+    }
+
+    private fun onDeclineClick() {
+        binding.frame.getTopCardListener().selectLeft()
+    }
+
+    private fun onAcceptClick() {
+        binding.frame.getTopCardListener().selectRight()
     }
 }
