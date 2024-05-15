@@ -25,6 +25,6 @@ class ClientPreferences @Inject constructor(
 
     companion object{
         private const val PREFS_NAME = "client_preferences"
-        private const val KEY_ON_BOARDING_DONE = "client_preferences"
+        private const val KEY_ON_BOARDING_DONE = "onBoardingDone"
     }
 }
