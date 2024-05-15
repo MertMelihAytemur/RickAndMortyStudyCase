@@ -4,7 +4,9 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_margin="30dp"
+    android:layout_marginHorizontal="30dp"
+    android:layout_marginVertical="50dp"
+    android:elevation="8dp"
     app:cardCornerRadius="12dp">
 
     <View
@@ -37,7 +39,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="180dp"
-            android:background="#CCCCCCCC"
+            android:background="#80000000"
             app:layout_constraintBottom_toBottomOf="parent">
 
             <ImageView

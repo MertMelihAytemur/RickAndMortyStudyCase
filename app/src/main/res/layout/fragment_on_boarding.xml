@@ -67,7 +67,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/spacing_huge"
         android:layout_marginBottom="@dimen/spacing_huge"
-        android:backgroundTint="@color/color_primary"
+        android:backgroundTint="@color/coral_red"
         android:paddingVertical="@dimen/spacing_medium"
         app:cornerRadius="@dimen/radius_normal"
         app:layout_constraintBottom_toBottomOf="parent"
