@@ -7,6 +7,23 @@
     android:layout_margin="30dp"
     app:cardCornerRadius="12dp">
 
+    <View
+        android:id="@+id/item_swipe_right_indicator"
+        android:alpha="0"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_margin="10dp"
+        android:background="#A5F" />
+
+    <View
+        android:id="@+id/item_swipe_left_indicator"
+        android:alpha="0"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_margin="10dp"
+        android:layout_gravity="right"
+        android:background="#5AF" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -66,7 +83,7 @@
                 app:layout_constraintTop_toTopOf="@id/ivStatus"
                 app:layout_constraintBottom_toBottomOf="@id/ivStatus"
                 android:layout_marginStart="12dp"
-                android:fontFamily="@font/poppins"
+                android:fontFamily="@font/poppins_bold"
                 android:textColor="@color/white"/>
 
             <TextView
@@ -106,7 +123,7 @@
                 android:layout_marginBottom="24dp"
                 android:backgroundTint="@color/white"
                 app:tint="@color/coral_red"
-                android:src="@drawable/ic_favorite"/>
+                android:src="@drawable/ic_favorite_filled"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
