@@ -15,15 +15,16 @@ class ClientPreferences @Inject constructor(
         prefs.edit().clear().apply()
     }
 
-    private fun <T> toJsonString(obj: T): String {
-        return Gson().toJson(obj)
+    fun setHasOnBoarding(hasOnBoarding: Boolean) {
+        prefs.edit().putBoolean(KEY_ON_BOARDING_DONE, hasOnBoarding).apply()
     }
 
-    private inline fun <reified T> fromJsonString(json: String): T {
-        return Gson().fromJson(json, T::class.java)
+    fun isOnBoardingDone(): Boolean {
+        return prefs.getBoolean(KEY_ON_BOARDING_DONE, false)
     }
 
     companion object{
         private const val PREFS_NAME = "client_preferences"
+        private const val KEY_ON_BOARDING_DONE = "client_preferences"
     }
 }
