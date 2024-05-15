@@ -15,6 +15,16 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
+/**
+ * CoreViewModel is a base class for all view models in the application.
+ * It provides a loading state flow to observe loading state changes.
+ * It also provides a method to launch requests with loading state changes.
+ * @see LoadingState
+ * @see Visibility
+ * @see UiModel
+ * @see UiResult
+ * @see UiError
+ */
 abstract class CoreViewModel : ViewModel() {
     private val loadingStateChannel: Channel<LoadingState> = Channel()
 
@@ -78,6 +88,10 @@ abstract class CoreViewModel : ViewModel() {
         }
     }
 
+    /**
+     * Changes the loading state of the view.
+     * @param loadingState The new loading state.
+     */
     suspend fun changeLoadingState(loadingState: LoadingState) {
         loadingStateChannel.send(loadingState)
     }

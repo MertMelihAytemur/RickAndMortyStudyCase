@@ -1,11 +1,11 @@
-package com.vmlmedia.rickandmortystudycase.core.ui.custom
+package com.vmlmedia.rickandmortystudycase.common.custom
 
 import android.content.Context
 import android.util.AttributeSet
 import android.widget.Adapter
 import android.widget.AdapterView
 
-abstract class BaseFlingAdapterView @JvmOverloads constructor(
+abstract class BaseSwipeCardAdapterView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyle: Int = 0
 ) : AdapterView<Adapter>(context, attrs, defStyle) {
 

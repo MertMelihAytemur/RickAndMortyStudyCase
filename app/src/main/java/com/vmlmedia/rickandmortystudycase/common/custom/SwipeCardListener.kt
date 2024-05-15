@@ -1,4 +1,4 @@
-package com.vmlmedia.rickandmortystudycase.core.ui.custom
+package com.vmlmedia.rickandmortystudycase.common.custom
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
@@ -7,8 +7,17 @@ import android.view.View
 import android.view.ViewGroup
 import kotlin.math.cos
 
+/**
+ * SwipeCardListener is an implementation of View.OnTouchListener that manages the swipe gestures for card views.
+ * It allows cards to react to user gestures by moving and rotating based on the swipe, and triggers actions when the gestures end.
+ *
+ * @property frame The view that will be swiped.
+ * @property dataObject An object associated with the card, for any kind of data handling.
+ * @property baseRotationDegrees The base degrees of rotation during a swipe, affecting the tilt of the card.
+ * @property flingListener Listener for handling swipe events and providing callbacks like card exit or selection.
+ */
 
-class FlingCardListener(
+class SwipeCardListener(
     private val frame: View,
     private val dataObject: Any,
     private var baseRotationDegrees: Float,
@@ -37,6 +46,12 @@ class FlingCardListener(
         frame.y = aPosY
     }
 
+    /**
+     * Handles touch events on the card view, managing the movement and rotation of the view based on user interaction.
+     * @param view The view being touched.
+     * @param event The MotionEvent object containing full details of the touch event.
+     * @return A boolean value indicating if the touch event is consumed.
+     */
     override fun onTouch(view: View, event: MotionEvent): Boolean {
         when (event.actionMasked) {
             MotionEvent.ACTION_DOWN -> {
@@ -78,12 +93,21 @@ class FlingCardListener(
         return true
     }
 
+    /**
+     * Calculates the rotation angle of the card based on its position.
+     * @param distanceX The horizontal distance moved by the card from its original position.
+     * @return The calculated rotation angle for the card.
+     */
     private fun calculateRotation(distanceX: Float): Float {
         var rotation = baseRotationDegrees * 2f * distanceX / parentWidth
         if (touchPosition == TOUCH_BELOW) rotation = -rotation
         return rotation
     }
 
+    /**
+     * Calculates the scroll progress percentage, indicating how far the card has moved from the center.
+     * @return The scroll progress percentage from -1.0 (fully left) to 1.0 (fully right).
+     */
     private fun getScrollProgressPercent(): Float {
         return when {
             movedBeyondLeftBorder() -> -1f
@@ -95,6 +119,9 @@ class FlingCardListener(
         }
     }
 
+    /**
+     * Resets the card view back to its original position on the stack after the gesture is finished.
+     */
     private fun resetCardViewOnStack() {
         if (movedBeyondLeftBorder()) {
             onSelected(true, getExitPoint(-objectW), 100)
@@ -114,6 +141,11 @@ class FlingCardListener(
         }
     }
 
+    /**
+     * Calculates the exit point for the card when swiped off the screen.
+     * @param exitXPoint The x-coordinate to which the card moves horizontally during the exit.
+     * @return The y-coordinate at the calculated exit point based on linear regression.
+     */
     private fun getExitPoint(exitXPoint: Int): Float {
         val x = FloatArray(2)
         x[0] = objectX
@@ -127,6 +159,12 @@ class FlingCardListener(
         return regression.slope() * exitXPoint + regression.intercept()
     }
 
+    /**
+     * Performs the final selection animation for the card, moving it off the screen.
+     * @param isLeft Boolean indicating if the card is exiting to the left side.
+     * @param exitY The y-coordinate for the card's exit.
+     * @param duration The duration of the exit animation in milliseconds.
+     */
     private fun onSelected(isLeft: Boolean, exitY: Float, duration: Long) {
         isAnimationRunning = true
 
@@ -177,6 +215,9 @@ class FlingCardListener(
         if (!isAnimationRunning) onSelected(false, objectY, 200)
     }
 
+    /**
+     * Provides the interface for handling events related to card flinging.
+     */
     interface FlingListener {
         fun onCardExited()
         fun leftExit(dataObject: Any)

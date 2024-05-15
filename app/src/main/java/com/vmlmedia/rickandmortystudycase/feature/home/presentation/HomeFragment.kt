@@ -1,30 +1,17 @@
 package com.vmlmedia.rickandmortystudycase.feature.home.presentation
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.PagerSnapHelper
-import androidx.recyclerview.widget.RecyclerView
-import com.vmlmedia.core.util.logD
 import com.vmlmedia.rickandmortystudycase.R
 import com.vmlmedia.rickandmortystudycase.common.ext.fadeVisibility
 import com.vmlmedia.rickandmortystudycase.core.ui.BaseFragment
-import com.vmlmedia.rickandmortystudycase.core.ui.custom.SwipeFlingAdapterView
+import com.vmlmedia.rickandmortystudycase.common.custom.SwipeCardAdapterView
 import com.vmlmedia.rickandmortystudycase.databinding.FragmentHomeBinding
 import com.vmlmedia.rickandmortystudycase.feature.home.domain.uimodel.CharacterListUiModel
 import com.vmlmedia.rickandmortystudycase.feature.home.domain.uimodel.CharacterUiModel
 import com.vmlmedia.rickandmortystudycase.feature.home.domain.uimodel.GetCharacterListApiState
 import com.vmlmedia.rickandmortystudycase.feature.home.presentation.adapter.CharactersArrayAdapter
-import com.vmlmedia.rickandmortystudycase.feature.home.presentation.adapter.CharactersListAdapter
-import com.vmlmedia.rickandmortystudycase.feature.home.presentation.adapter.SwipeCardCallback
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -66,7 +53,7 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>(
     }
 
     private fun setupFlingListener() {
-        binding.frame.setFlingListener(object : SwipeFlingAdapterView.onFlingListener {
+        binding.frame.setFlingListener(object : SwipeCardAdapterView.OnSwipeListener {
             override fun removeFirstObjectInAdapter() {
                 if (characterList.isNotEmpty()) {
                     characterList.removeAt(0)

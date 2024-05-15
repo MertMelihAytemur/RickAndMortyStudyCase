@@ -90,7 +90,7 @@ class OnBoardingFragment : BaseFragment<OnBoardingViewModel, FragmentOnBoardingB
             if (binding.viewPagerInformations.currentItem != OnBoardingPageFragmentFactory.size - 1)
                 binding.viewPagerInformations.currentItem = binding.viewPagerInformations.currentItem + 1
             else {
-                //SET ONBOARDING HAS DONE.
+                viewModel.setOnBoardingCompleted()
                 navigateWithAnimation(R.id.action_onBoardingFragment_to_homeFragment)
             }
         }

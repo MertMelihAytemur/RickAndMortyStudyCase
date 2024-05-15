@@ -9,6 +9,10 @@ import retrofit2.Response
 import java.net.ConnectException
 import java.net.UnknownHostException
 
+/**
+ * This class is responsible for executing API calls and handling the response.
+ * It returns an [ApiResult] which can be either [ApiResult.Success] or [ApiResult.Error].
+ */
 interface ApiExecutor {
     suspend fun <T> execute(
         call: suspend () -> Response<T>

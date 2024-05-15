@@ -20,7 +20,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 class NetworkModule {
-
     @Provides
     @Singleton
     fun provideLoggingInterceptor(): HttpLoggingInterceptor {
@@ -31,7 +30,6 @@ class NetworkModule {
         }
         return logger
     }
-
     @Provides
     @Singleton
     fun provideOkHttpClient(
@@ -44,7 +42,6 @@ class NetworkModule {
             .connectTimeOut(60, TimeUnit.SECONDS)
             .build()
     }
-
     @Provides
     @Singleton
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {

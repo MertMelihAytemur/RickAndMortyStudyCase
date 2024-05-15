@@ -6,7 +6,6 @@ import com.vmlmedia.rickandmortystudycase.feature.home.data.dto.request.GetChara
 import com.vmlmedia.rickandmortystudycase.feature.home.domain.uimodel.CharacterListUiModel
 
 interface HomeRepository {
-
     suspend fun getCharacters(
         params: GetCharactersRequestDto
     ): UiResult<CharacterListUiModel, ApiErrorModel>

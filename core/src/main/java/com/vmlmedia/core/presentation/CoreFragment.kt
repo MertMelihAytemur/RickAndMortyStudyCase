@@ -25,6 +25,10 @@ abstract class CoreFragment<VM: CoreViewModel> : Fragment() {
         }
     }
 
+    /**
+     * Collects the page state and executes the block when the state changes
+     * @param pageState the state to collect
+     */
     fun <T> collectPageState(pageState: StateFlow<T>, block: (T) -> Unit){
         viewLifecycleOwner.lifecycleScope.launch {
             pageState.collect { state ->

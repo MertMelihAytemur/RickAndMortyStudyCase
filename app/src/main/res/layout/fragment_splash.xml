@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg_gradient"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".feature.splash.presentation.SplashFragment">
 
@@ -22,8 +23,9 @@
         android:layout_height="wrap_content"
         android:id="@+id/tvTitle"
         android:text="@string/app_name"
-        android:textSize="24sp"
+        android:textSize="28sp"
         android:textStyle="bold"
+        android:textColor="@color/coral_red"
         android:fontFamily="@font/poppins_bold"
         app:layout_constraintTop_toBottomOf="@id/animationView"
         app:layout_constraintStart_toStartOf="parent"
@@ -37,11 +39,12 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:text="Developed by MERT MELİH AYTEMUR"
+        android:textSize="13sp"
+        android:text="@string/developed_by"
         android:fontFamily="sans-serif-light"
         android:layout_marginBottom="24dp"
         android:textAlignment="center"
-        android:textColor="@color/black"/>
+        android:textColor="@color/coral_red"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
