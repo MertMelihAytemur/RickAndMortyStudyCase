@@ -3,7 +3,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <color name="color_primary">#5DCCFC</color>
+    <color name="color_primary">#0F80FD</color>
     <color name="color_secondary">#0F80FD</color>
     <color name="color_textColor_100">#9BE0FF</color>
     <color name="color_textColor_200">#5686F5</color>
@@ -13,4 +13,5 @@
     <color name="color_backgroundColor">#F2F2F2</color>
 
     <color name="color_strokeColor">#05050000</color>
+    <color name="coral_red">#FF4141</color>
 </resources>
