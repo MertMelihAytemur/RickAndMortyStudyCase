@@ -1,5 +1,12 @@
-package com.vmlmedia.rickandmortystudycase.core.ui.custom
+package com.vmlmedia.rickandmortystudycase.common.custom
 
+/**
+ * This class performs linear regression and calculates the regression parameters.
+ *
+ * @param x the independent variable data points as a FloatArray.
+ * @param y the dependent variable data points as a FloatArray.
+ * @throws IllegalArgumentException if the lengths of the x and y arrays are not equal.
+ */
 class LinearRegression(x: FloatArray, y: FloatArray) {
     private val n: Int = x.size
     private val alpha: Double
@@ -11,24 +18,24 @@ class LinearRegression(x: FloatArray, y: FloatArray) {
 
     init {
         if (x.size != y.size) {
-            throw IllegalArgumentException("array lengths are not equal")
+            throw IllegalArgumentException("Array lengths are not equal")
         }
 
-        // first pass: calculate sums and means
+        // Calculate sums and means of x and y
         var sumx = 0.0
         var sumy = 0.0
         var sumx2 = 0.0
-        for (xi in x) {
+        x.forEach { xi ->
             sumx += xi
             sumx2 += xi * xi
         }
-        for (yi in y) {
+        y.forEach { yi ->
             sumy += yi
         }
         val xbar = sumx / n
         val ybar = sumy / n
 
-        // second pass: compute summary statistics
+        // Calculate sums of squares and cross products
         var xxbar = 0.0
         var yybar = 0.0
         var xybar = 0.0
@@ -42,15 +49,16 @@ class LinearRegression(x: FloatArray, y: FloatArray) {
         beta = xybar / xxbar
         alpha = ybar - beta * xbar
 
-        // more statistical analysis
-        var rss = 0.0  // residual sum of squares
-        var ssr = 0.0  // regression sum of squares
+        // Calculate regression sum of squares and residual sum of squares
+        var rss = 0.0  // Residual sum of squares
+        var ssr = 0.0  // Regression sum of squares
         for (i in x.indices) {
             val fit = beta * x[i] + alpha
-            rss += (fit - y[i]) * (fit - y[i])
+            rss += (y[i] - fit) * (y[i] - fit)
             ssr += (fit - ybar) * (fit - ybar)
         }
 
+        // Calculate statistical measures
         val degreesOfFreedom = n - 2
         r2 = ssr / yybar
         svar = rss / degreesOfFreedom
@@ -58,14 +66,24 @@ class LinearRegression(x: FloatArray, y: FloatArray) {
         svar0 = svar / n + xbar * xbar * svar1
     }
 
+    /**
+     * Returns the y-intercept of the regression line.
+     * @return the y-intercept as a Float.
+     */
     fun intercept(): Float = alpha.toFloat()
-    fun slope(): Float = beta.toFloat()
-    fun r2(): Double = r2
-    fun interceptStdErr(): Double = Math.sqrt(svar0)
-    fun slopeStdErr(): Double = Math.sqrt(svar1)
 
-    fun predict(x: Double): Double = beta * x + alpha
+    /**
+     * Returns the slope of the regression line.
+     * @return the slope as a Float.
+     */
+    fun slope(): Float = beta.toFloat()
+
+    /**
+     * Returns the coefficient of determination (R^2) of the regression.
+     * @return the R^2 value as a Double.
+     */
+    fun r2(): Double = r2
 
     override fun toString(): String =
-        "%.2f N + %.2f".format(slope(), intercept()) + "  (R^2 = %.3f)".format(r2())
+        "Linear Regression Model: y = %.2f x + %.2f (R^2 = %.3f)".format(slope(), intercept(), r2())
 }

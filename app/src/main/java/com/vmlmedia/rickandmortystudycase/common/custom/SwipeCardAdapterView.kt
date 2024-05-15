@@ -1,33 +1,43 @@
-package com.vmlmedia.rickandmortystudycase.core.ui.custom
+package com.vmlmedia.rickandmortystudycase.common.custom
 
-import android.content.Context;
-import android.database.DataSetObserver;
-import android.graphics.PointF;
-import android.os.Build;
-import android.util.AttributeSet;
-import android.view.Gravity;
-import android.view.View;
-import android.widget.Adapter;
-import android.widget.FrameLayout;
-import androidx.annotation.RequiresApi
+import android.annotation.SuppressLint
+import android.content.Context
+import android.database.DataSetObserver
+import android.graphics.PointF
+import android.util.AttributeSet
+import android.view.Gravity
+import android.view.View
+import android.widget.Adapter
+import android.widget.FrameLayout
 import androidx.core.view.GravityCompat
 import com.vmlmedia.rickandmortystudycase.R
 
-class SwipeFlingAdapterView @JvmOverloads constructor(
+/**
+ * A custom view for displaying swipeable cards similar to the Tinder interface.
+ * This view supports custom swipe behaviors and animations.
+ *
+ * @property context The context the view is running in, through which it can access the current theme, resources, etc.
+ * @property attrs The attributes of the XML tag that is inflating the view.
+ * @property defStyle An attribute in the current theme that contains a reference to a style resource that supplies default values for the view. Can be 0 to not look for defaults.
+ * @constructor Creates an instance of SwipeCardAdapterView.
+ */
+
+@SuppressLint("CustomViewStyleable")
+class SwipeCardAdapterView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyle: Int = 0
-) : BaseFlingAdapterView(context, attrs, defStyle) {
+) : BaseSwipeCardAdapterView(context, attrs, defStyle) {
 
     private var maxVisible = 4
     private var minAdapterStack = 1
     private var rotationDegrees = 15f
     private var adapter: Adapter? = null
     private var lastObjectInStack = 0
-    private var flingListener: onFlingListener? = null
+    private var flingListener: OnSwipeListener? = null
     private var dataSetObserver: AdapterDataSetObserver? = null
     private var inLayout = false
     private var activeCard: View? = null
     private var onItemClickListener: OnItemClickListener? = null
-    private var flingCardListener: FlingCardListener? = null
+    private var swipeCardListener: SwipeCardListener? = null
     private var lastTouchPoint: PointF? = null
 
     init {
@@ -38,20 +48,6 @@ class SwipeFlingAdapterView @JvmOverloads constructor(
             recycle()
         }
     }
-
-    fun init(context: Context, adapter: Adapter) {
-        this.adapter = adapter
-        if (context is onFlingListener) {
-            flingListener = context
-        } else {
-            throw RuntimeException("Activity does not implement SwipeFlingAdapterView.onFlingListener")
-        }
-        if (context is OnItemClickListener) {
-            onItemClickListener = context
-        }
-        setAdapter(adapter)
-    }
-
     override fun getSelectedView(): View? = activeCard
 
     override fun requestLayout() {
@@ -68,7 +64,7 @@ class SwipeFlingAdapterView @JvmOverloads constructor(
             } else {
                 val topCard = getChildAt(lastObjectInStack)
                 if (activeCard != null && topCard != null && topCard == activeCard) {
-                    if (flingCardListener?.isTouching() == true) {
+                    if (swipeCardListener?.isTouching() == true) {
                         lastTouchPoint?.let {
                             removeViewsInLayout(0, lastObjectInStack)
                             layoutChildren(1, adapterCount)
@@ -99,7 +95,6 @@ class SwipeFlingAdapterView @JvmOverloads constructor(
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     private fun makeAndAddView(child: View) {
         val lp = child.layoutParams as FrameLayout.LayoutParams
         addViewInLayout(child, 0, lp, true)
@@ -140,7 +135,7 @@ class SwipeFlingAdapterView @JvmOverloads constructor(
         if (childCount > 0) {
             activeCard = getChildAt(lastObjectInStack)
             activeCard?.let { card ->
-                flingCardListener = FlingCardListener(card, adapter!!.getItem(0), rotationDegrees, object : FlingCardListener.FlingListener {
+                swipeCardListener = SwipeCardListener(card, adapter!!.getItem(0), rotationDegrees, object : SwipeCardListener.FlingListener {
                     override fun onCardExited() {
                         activeCard = null
                         flingListener?.removeFirstObjectInAdapter()
@@ -162,12 +157,12 @@ class SwipeFlingAdapterView @JvmOverloads constructor(
                         flingListener?.onScroll(scrollProgressPercent)
                     }
                 })
-                card.setOnTouchListener(flingCardListener)
+                card.setOnTouchListener(swipeCardListener)
             }
         }
     }
 
-    fun getTopCardListener() = flingCardListener ?: throw NullPointerException()
+    fun getTopCardListener() = swipeCardListener ?: throw NullPointerException()
 
     fun setMaxVisible(maxVisible: Int) {
         this.maxVisible = maxVisible
@@ -191,8 +186,8 @@ class SwipeFlingAdapterView @JvmOverloads constructor(
         }
     }
 
-    fun setFlingListener(onFlingListener: onFlingListener) {
-        this.flingListener = onFlingListener
+    fun setFlingListener(OnSwipeListener: OnSwipeListener) {
+        this.flingListener = OnSwipeListener
     }
 
     fun setOnItemClickListener(onItemClickListener: OnItemClickListener) {
@@ -217,7 +212,7 @@ class SwipeFlingAdapterView @JvmOverloads constructor(
         fun onItemClicked(itemPosition: Int, dataObject: Any)
     }
 
-    interface onFlingListener {
+    interface OnSwipeListener {
         fun removeFirstObjectInAdapter()
         fun onLeftCardExit(dataObject: Any)
         fun onRightCardExit(dataObject: Any)

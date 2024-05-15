@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.viewbinding.ViewBinding
 import com.vmlmedia.core.domain.UiError
 import com.vmlmedia.core.presentation.CoreFragment
@@ -15,14 +16,14 @@ typealias Inflater<T> = (LayoutInflater, ViewGroup?, Boolean) -> T
 
 abstract class BaseFragment<VM : CoreViewModel, VB : ViewBinding>(
     private val inflater: Inflater<VB>,
-) : CoreFragment<VM>(){
+) : CoreFragment<VM>() {
 
     private var _binding: VB? = null
     protected val binding get() = _binding!!
 
     override val loadingInterface: LoadingInterface
         get() = (requireActivity() as MainActivity).loadingDialog
-    //private val errorDialogFragment by lazy { ErrorBottomSheetDialogFragment(requireContext()) }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -39,9 +40,27 @@ abstract class BaseFragment<VM : CoreViewModel, VB : ViewBinding>(
 
     fun handleNetworkError(
         error: UiError<ApiErrorModel>,
-        buttonText: String? = null,
-        dialogMessageText: String? = null
     ) {
+        when (error) {
+            is UiError.Authentication -> Toast.makeText(
+                requireContext(),
+                "Authentication error",
+                Toast.LENGTH_SHORT
+            ).show()
 
+            is UiError.NoInternet -> Toast.makeText(
+                requireContext(),
+                "No internet connection",
+                Toast.LENGTH_SHORT
+            ).show()
+
+            is UiError.Server -> Toast.makeText(
+                requireContext(),
+                "Server error",
+                Toast.LENGTH_SHORT
+            ).show()
+
+            is UiError.IO -> Toast.makeText(requireContext(), "IO error", Toast.LENGTH_SHORT).show()
+        }
     }
 }
