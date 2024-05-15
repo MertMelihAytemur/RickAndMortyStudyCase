@@ -15,3 +15,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "RickAndMortyStudyCase"
 include(":app")
+include(":core")
