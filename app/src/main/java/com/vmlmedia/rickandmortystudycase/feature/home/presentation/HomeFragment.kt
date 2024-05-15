@@ -20,6 +20,7 @@ import com.vmlmedia.rickandmortystudycase.core.ui.BaseFragment
 import com.vmlmedia.rickandmortystudycase.core.ui.custom.SwipeFlingAdapterView
 import com.vmlmedia.rickandmortystudycase.databinding.FragmentHomeBinding
 import com.vmlmedia.rickandmortystudycase.feature.home.domain.uimodel.CharacterListUiModel
+import com.vmlmedia.rickandmortystudycase.feature.home.domain.uimodel.CharacterUiModel
 import com.vmlmedia.rickandmortystudycase.feature.home.domain.uimodel.GetCharacterListApiState
 import com.vmlmedia.rickandmortystudycase.feature.home.presentation.adapter.CharactersArrayAdapter
 import com.vmlmedia.rickandmortystudycase.feature.home.presentation.adapter.CharactersListAdapter
@@ -34,12 +35,12 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>(
 
     private lateinit var charactersAdapter: CharactersArrayAdapter
 
+    private var characterList : MutableList<CharacterUiModel> = mutableListOf()
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getCharacters()
         observeEvents()
-
-        setupAdapter()
         setupFlingListener()
     }
 
@@ -56,18 +57,19 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>(
 
     private fun setupAdapter() {
         charactersAdapter = CharactersArrayAdapter(
-            requireContext(), viewModel.characterList,
+            requireContext(), characterList,
             ::onDeclineClick, ::onAcceptClick
         )
 
         binding.frame.adapter = charactersAdapter
+        charactersAdapter.notifyDataSetChanged()
     }
 
     private fun setupFlingListener() {
         binding.frame.setFlingListener(object : SwipeFlingAdapterView.onFlingListener {
             override fun removeFirstObjectInAdapter() {
-                if (viewModel.characterList.isNotEmpty()) {
-                    viewModel.characterList.removeAt(0)
+                if (characterList.isNotEmpty()) {
+                    characterList.removeAt(0)
                     charactersAdapter.notifyDataSetChanged()
                 }
             }
@@ -81,8 +83,9 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>(
             }
 
             override fun onAdapterAboutToEmpty(itemsInAdapter: Int) {
-                viewModel.getCharacters()
-                charactersAdapter.notifyDataSetChanged()
+                if(characterList.isNotEmpty()){
+                    viewModel.getCharacters()
+                }
             }
 
             override fun onScroll(scrollProgressPercent: Float) {
@@ -95,9 +98,6 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>(
         })
     }
 
-    private fun makeToast(message: String) {
-        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
-    }
 
     private fun onGetCharactersResponseReceived(getCharacterListApiState: GetCharacterListApiState) {
         when (getCharacterListApiState) {
@@ -118,7 +118,8 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>(
             viewModel.pageSize = it.pageSize
             viewModel.itemCount = it.itemCount
 
-            charactersAdapter.notifyDataSetChanged()
+            characterList = it.characters.toMutableList()
+            setupAdapter()
         }
     }
 
