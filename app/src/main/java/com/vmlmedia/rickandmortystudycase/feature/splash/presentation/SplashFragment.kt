@@ -6,6 +6,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.vmlmedia.rickandmortystudycase.R
+import com.vmlmedia.rickandmortystudycase.common.ext.navigateWithAnimation
 import com.vmlmedia.rickandmortystudycase.core.ui.BaseFragment
 import com.vmlmedia.rickandmortystudycase.databinding.FragmentSplashBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -26,7 +27,7 @@ class SplashFragment : BaseFragment<SplashViewModel,FragmentSplashBinding>(
     private fun initSplash() {
         lifecycleScope.launch {
             delay(DELAY_SPLASH)
-            findNavController().navigate(R.id.action_splashFragment_to_onBoardingFragment)
+            navigateWithAnimation(R.id.action_splashFragment_to_onBoardingFragment)
         }
     }
 

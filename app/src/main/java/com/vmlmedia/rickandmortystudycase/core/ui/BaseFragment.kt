@@ -44,5 +44,4 @@ abstract class BaseFragment<VM : CoreViewModel, VB : ViewBinding>(
     ) {
 
     }
-
 }

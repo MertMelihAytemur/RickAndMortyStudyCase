@@ -5,6 +5,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.vmlmedia.core.data.Visibility
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 abstract class CoreFragment<VM: CoreViewModel> : Fragment() {
@@ -20,6 +21,14 @@ abstract class CoreFragment<VM: CoreViewModel> : Fragment() {
                 } else if (it.show == Visibility.HIDE) {
                     loadingInterface.hide()
                 }
+            }
+        }
+    }
+
+    fun <T> collectPageState(pageState: StateFlow<T>, block: (T) -> Unit){
+        viewLifecycleOwner.lifecycleScope.launch {
+            pageState.collect { state ->
+                block(state)
             }
         }
     }

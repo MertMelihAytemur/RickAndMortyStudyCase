@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.vmlmedia.rickandmortystudycase.R
 import com.vmlmedia.rickandmortystudycase.common.ext.getDrawableCompat
+import com.vmlmedia.rickandmortystudycase.common.ext.navigateWithAnimation
 import com.vmlmedia.rickandmortystudycase.common.ext.setMargin
 import com.vmlmedia.rickandmortystudycase.core.ui.BaseFragment
 import com.vmlmedia.rickandmortystudycase.databinding.FragmentOnBoardingBinding
@@ -89,8 +90,8 @@ class OnBoardingFragment : BaseFragment<OnBoardingViewModel, FragmentOnBoardingB
             if (binding.viewPagerInformations.currentItem != OnBoardingPageFragmentFactory.size - 1)
                 binding.viewPagerInformations.currentItem = binding.viewPagerInformations.currentItem + 1
             else {
-                //viewModel.setOnBoardingHasSeen()
-                //findNavigationHandler().navigateToFragment(HomeFragment.newInstance())
+                //SET ONBOARDING HAS DONE.
+                navigateWithAnimation(R.id.action_onBoardingFragment_to_homeFragment)
             }
         }
     }

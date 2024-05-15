@@ -27,11 +27,11 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            buildConfigField("String", "API_BASE_URL", "\"https://rickandmortyapi.com/api/\"")
+            buildConfigField("String", "API_BASE_URL", "\"https://rickandmortyapi.com/\"")
         }
 
         debug {
-            buildConfigField("String", "API_BASE_URL", "\"https://rickandmortyapi.com/api/\"")
+            buildConfigField("String", "API_BASE_URL", "\"https://rickandmortyapi.com/\"")
         }
     }
     compileOptions {
@@ -59,6 +59,15 @@ dependencies {
 
     implementation(project(":core"))
 
+    //Retrofit
+    implementation("com.squareup.retrofit2:retrofit:2.11.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.11.0")
+
+    //OkHttp
+    implementation(platform("com.squareup.okhttp3:okhttp-bom:4.10.0"))
+    implementation("com.squareup.okhttp3:okhttp")
+    implementation("com.squareup.okhttp3:logging-interceptor")
+
     //Lottie Animation
     implementation("com.airbnb.android:lottie:6.0.0")
 
@@ -79,6 +88,15 @@ dependencies {
     implementation("androidx.navigation:navigation-ui-ktx:2.7.7")
 
     implementation("pl.droidsonroids.gif:android-gif-drawable:1.2.16")
+
+    //gson
+    implementation("com.google.code.gson:gson:2.10.1")
+
+    //Paging 3
+    implementation("androidx.paging:paging-runtime-ktx:3.2.1")
+
+    //Glide for image loading
+    implementation("com.github.bumptech.glide:glide:4.16.0")
 
 
 }

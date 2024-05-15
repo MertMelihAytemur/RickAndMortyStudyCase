@@ -13,4 +13,5 @@
     <color name="color_backgroundColor">#F2F2F2</color>
 
     <color name="color_strokeColor">#05050000</color>
+    <color name="coral_red">#FF4141</color>
 </resources>
