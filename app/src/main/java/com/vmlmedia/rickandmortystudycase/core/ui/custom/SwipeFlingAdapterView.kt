@@ -18,7 +18,7 @@ class SwipeFlingAdapterView @JvmOverloads constructor(
 ) : BaseFlingAdapterView(context, attrs, defStyle) {
 
     private var maxVisible = 4
-    private var minAdapterStack = 6
+    private var minAdapterStack = 1
     private var rotationDegrees = 15f
     private var adapter: Adapter? = null
     private var lastObjectInStack = 0

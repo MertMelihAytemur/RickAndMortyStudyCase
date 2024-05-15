@@ -7,6 +7,7 @@ import com.vmlmedia.rickandmortystudycase.feature.home.domain.uimodel.CharacterU
 import com.vmlmedia.rickandmortystudycase.feature.home.domain.uimodel.GetCharacterListApiState
 import com.vmlmedia.rickandmortystudycase.feature.home.domain.usecase.GetCharactersUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -26,21 +27,19 @@ class HomeViewModel @Inject constructor(
 
     private var currentPage: Int = 1
 
-    val characterList = mutableListOf<CharacterUiModel>()
-
     fun getCharacters() {
         if (currentPage >= pageSize && currentPage != 1) {
             return
         }
 
         launchRequest(requestBody = {
+            delay(2000)
             getCharactersUseCase.invoke(
                 params = GetCharactersRequestDto(page = currentPage)
             )
         }, onSuccess = { uiModel ->
             if (!uiModel?.characters.isNullOrEmpty()) {
                 currentPage++
-                characterList.addAll(uiModel!!.characters)
             }
 
             _pageStateFlow.update {
